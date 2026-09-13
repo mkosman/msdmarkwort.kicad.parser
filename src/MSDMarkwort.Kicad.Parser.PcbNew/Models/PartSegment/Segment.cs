@@ -6,10 +6,10 @@ namespace MSDMarkwort.Kicad.Parser.PcbNew.Models.PartSegment
 {
     public class Segment
     {
-        [KicadParserSymbol("start")]
+        [KicadParserComplexSymbol("start")]
         public Position StartPosition { get; set; } = new Position();
 
-        [KicadParserSymbol("end")]
+        [KicadParserComplexSymbol("end")]
         public Position EndPosition { get; set; } = new Position();
 
         [KicadParserSymbol("width")]
@@ -26,7 +26,7 @@ namespace MSDMarkwort.Kicad.Parser.PcbNew.Models.PartSegment
 
         [KicadParserSymbol("uuid")]
         public Guid Uuid { get; set; }
-
+         
         [KicadParserSymbol("tstamp")]
         public Guid TStamp { get; set; }
     }
