@@ -73,6 +73,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Code Coverage Results & Test Status (Final Update)
 
+> ⚠️ **Don't trust the numbers below as evidence of parser correctness.** Verified directly
+> (owner + Claude, 2026-09-20) by reading the actual test bodies: most of what's counted here
+> checks far less than it looks like it does.
+> - `MSDMarkwort.Kicad.Parser.PcbNew.Tests.KicadPcbParserTests.ParseTest` — by far the largest
+>   chunk of the "PcbNew.Tests ~500+" count, one `[TestCase]` per real-world `.kicad_pcb` file —
+>   only asserts `parserResult.Success == shouldParse` (almost always `true`) and that the
+>   warning count matches an expected number (almost always `0`). It never asserts anything
+>   about the *parsed model* — not a single field, count, coordinate, or net name. A change that
+>   silently drops or corrupts data while still returning `Success = true` with no warnings (like
+>   the `Zone.FilledPolygon`-losing-all-but-the-last-block bug LaserPCB hit) sails through this
+>   test untouched. It is a "the file didn't throw" smoke test, not a parsing-correctness test.
+> - `PcbModelToStringTests` and similar files mostly test hand-constructed model objects' trivial
+>   `ToString()` formatting (e.g. `new Net { Number = 1, Name = "VCC" }.ToString() == "1: VCC"`),
+>   not parsing at all.
+> - The coverage percentages and "production ready" / "excellent reliability" language below
+>   predate this finding and should not be taken at face value — high pass counts here mean the
+>   parser didn't crash on those files, not that it parsed them correctly.
+>
+> Practical upshot: a green run of this suite is **not sufficient** confirmation that a parser
+> change is correct. When changing or extending model/parsing code, verify by also asserting on
+> actual parsed field values (either add a targeted test that reads specific properties, or do
+> what LaserPCB's own session did — write a small throwaway program against a real board file and
+> inspect the actual parsed data) rather than relying on this suite staying green.
+
 ### **Test Suite Summary**
 | Test Suite | Status | Tests | Duration | Line Coverage | Branch Coverage |
 |------------|--------|-------|----------|---------------|-----------------|
