@@ -59,7 +59,7 @@ namespace MSDMarkwort.Kicad.Parser.PcbNew.Models.PartZone
         [KicadParserComplexSymbol("polygon")]
         public Polygon Polygon { get; set; } = new Polygon();
 
-        [KicadParserComplexSymbol("filled_polygon")]
-        public FilledPolygon FilledPolygon { get; set; } = new FilledPolygon();
+        [KicadParserList("filled_polygon", KicadParserListAddType.Complex)]
+        public List<FilledPolygon> FilledPolygons { get; set; } = new List<FilledPolygon>();
     }
 }
